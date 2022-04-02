@@ -1,0 +1,34 @@
+- name: Deploys VM based on cloud image
+  hosts: localhost
+  gather_facts: yes
+  become: yes
+  vars:
+    pool_dir: "/var/lib/libvirt/images"
+    vcpus: 1
+    ram_mb: 1024
+    cleanup: false
+    net: default
+    ssh_pub_key: "/home/jlmanrique/.ssh/id_rsa.pub"
+  tasks:
+    - name: KVM Provision role
+      include_role:
+        name: kvm_provision
+      vars:
+        libvirt_pool_dir: "{{ pool_dir }}"
+        vm_name: "{{ item }}"
+        vm_vcpus: "{{ vcpus }}"
+        vm_ram_mb: "{{ ram_mb }}"
+        vm_net: "{{ net }}"
+        cleanup_tmp: "{{ cleanup }}"
+        ssh_key: "{{ ssh_pub_key }}"
+      loop:
+        - rhel-lab01
+        - rhel-lab02
+        - rhel-lab03
+        - rhel-lab04
+        - rhel-lab05
+        - rhel-lab06
+        - rhel-lab07
+        - rhel-lab08
+        - rhel-lab09
+        - rhel-lab10
